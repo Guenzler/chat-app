@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text, Button, TouchableOpacity, TextInput, ImageBackground } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, TextInput, ImageBackground, KeyboardAvoidingView, Platform } from 'react-native';
 import { useState } from 'react';
 
 //path to background image shown on the start screen
@@ -36,6 +36,8 @@ const Start = ({ navigation }) => {
             {
               colors.map((color, index) => (
                 <TouchableOpacity
+                  accessible={true}
+                  accessibilityHint="Lets you choose a background color for your app."
                   key={index}
                   style={[
                     styles.colorButton,
@@ -54,10 +56,13 @@ const Start = ({ navigation }) => {
             onPress={() => navigation.navigate('Chat', { name: name, background: background })}
             accessible={true}
             accessibilityRole="button"
+            accessibilityHint="activate button to enter chat room"
           >
             <Text style={styles.buttonText}>Start Chatting</Text>
           </TouchableOpacity>
         </View>
+        {/* make sure keyboard doesnt hide input field */}
+        {Platform.OS === 'ios' ? <KeyboardAvoidingView behavior="padding" /> : null}
       </ImageBackground>
     </View>
   );
