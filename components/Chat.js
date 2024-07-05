@@ -1,48 +1,44 @@
 import { StyleSheet, View, KeyboardAvoidingView, Platform } from 'react-native';
 import { useEffect, useState } from 'react';
 import { GiftedChat } from "react-native-gifted-chat";
+import { collection, addDoc, onSnapshot, query, orderBy } from "firebase/firestore";
 
 // use CustomSystemMessage and CustomDay to customize the appeareance of system messages
 import CustomSystemMessage from './CustomSystemMessage';
 import CustomDay from './CustomDay';
 
-const Chat = ({ route, navigation }) => {
+const Chat = ({ db, route, navigation }) => {
+
     //state messages stores all messages
     const [messages, setMessages] = useState([]);
 
-    //get users name and preferred background color from route.params
-    const { name, background } = route.params;
+    //get users name, userID and preferred background color from route.params
+    const { name, background, userID } = route.params;
 
-    // set the users name as page title
     useEffect(() => {
 
         //set the title of the page to the name of the user
         navigation.setOptions({ title: name });
 
-        //initialize messages with a static message and a system message
-        setMessages([
-            {
-                _id: 1,
-                text: "Hello developer",
-                createdAt: new Date(),
-                user: {
-                    _id: 2,
-                    name: "React Native",
-                    avatar: "https://picsum.photos/140/140",
-                },
-            },
-            {
-                _id: 2,
-                text: name + ' has entered the chat',
-                createdAt: new Date(),
-                system: true,
-            },
-        ]);
+        // get messages from database
+        const q = query(collection(db, "messages"), orderBy("createdAt", "desc"));
+
+        const unsubMessages = onSnapshot(q, (documentsSnapshot) => {
+            let newMessages = [];
+            documentsSnapshot.forEach(doc => {
+                newMessages.push({ id: doc.id, ...doc.data(), createdAt: new Date(doc.data().createdAt.toMillis()) })
+            });
+            setMessages(newMessages);
+        });
+        // Clean up code
+        return () => {
+            if (unsubMessages) unsubMessages();
+        }
     }, []);
 
-    //when a new message is sent, add it to all other messages stored in the state messages
+    //when a new message is sent, store it in database
     const onSend = (newMessages) => {
-        setMessages(previousMessages => GiftedChat.append(previousMessages, newMessages))
+        addDoc(collection(db, "messages"), newMessages[0])
     }
 
     return (
@@ -51,13 +47,14 @@ const Chat = ({ route, navigation }) => {
                 messages={messages}
                 onSend={messages => onSend(messages)}
                 user={{
-                    _id: 1
+                    _id: userID,
+                    name: name
                 }}
                 renderSystemMessage={(props) => <CustomSystemMessage {...props} />}
                 renderDay={(props) => <CustomDay {...props} />}
             />
 
-            {/* make sure keyboard doesnt hide input field */}
+            {/* make sure keyboard does not hide input field */}
             {(Platform.OS === 'android' || Platform.OS === 'ios') ? <KeyboardAvoidingView behavior="height" /> : null}
         </View>
     );
