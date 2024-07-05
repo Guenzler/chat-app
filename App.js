@@ -7,6 +7,15 @@ import { getFirestore } from "firebase/firestore";
 import { initializeAuth, getReactNativePersistence } from 'firebase/auth';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+import { 
+  FIREBASE_API_KEY, 
+  FIREBASE_AUTH_DOMAIN, 
+  FIREBASE_PROJECT_ID, 
+  FIREBASE_STORAGE_BUCKET, 
+  FIREBASE_MESSAGING_SENDER_ID, 
+  FIREBASE_APP_ID, 
+} from '@env';
+
 // import React Navigation
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -18,12 +27,12 @@ const Stack = createNativeStackNavigator();
 const App = () => {
 
   const firebaseConfig = {
-    apiKey: "AIzaSyCBjOT1cSBT7U8aWPGiUx6RcqN2s36iIM0",
-    authDomain: "chat-app-225b4.firebaseapp.com",
-    projectId: "chat-app-225b4",
-    storageBucket: "chat-app-225b4.appspot.com",
-    messagingSenderId: "267130210972",
-    appId: "1:267130210972:web:2c53edeba18139df8ebb59"
+    apiKey: FIREBASE_API_KEY,
+    authDomain: FIREBASE_AUTH_DOMAIN,
+    projectId: FIREBASE_PROJECT_ID,
+    storageBucket: FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: FIREBASE_MESSAGING_SENDER_ID,
+    appId: FIREBASE_APP_ID
   };
 
   // Initialize Firebase
