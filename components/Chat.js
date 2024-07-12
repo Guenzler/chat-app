@@ -11,7 +11,6 @@ import CustomDay from './CustomDay';
 
 import CustomActions from './CustomActions';
 
-
 const Chat = ({ isConnected, db, storage, route, navigation }) => {
 
     //state messages stores all messages
@@ -54,9 +53,10 @@ const Chat = ({ isConnected, db, storage, route, navigation }) => {
             if (unsubMessages) unsubMessages();
             unsubMessages = null;
 
-            // get messages from database
+            // reference to collection on firestore
             const q = query(collection(db, "messages"), orderBy("createdAt", "desc"));
 
+            //attach listener to collection
             unsubMessages = onSnapshot(q, (documentsSnapshot) => {
                 let newMessages = [];
                 documentsSnapshot.forEach(doc => {
@@ -80,10 +80,12 @@ const Chat = ({ isConnected, db, storage, route, navigation }) => {
         addDoc(collection(db, "messages"), newMessages[0])
     }
 
+    //render menu for additional options for sending images and location
     const renderCustomActions = (props) => {
-        return <CustomActions  storage={storage} userID={userID} {...props} />;
+        return <CustomActions storage={storage} userID={userID} {...props} />;
     };
 
+    //define map view in case user sends location
     const renderCustomView = (props) => {
         const { currentMessage } = props;
         if (currentMessage.location) {

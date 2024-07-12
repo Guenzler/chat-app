@@ -1,6 +1,6 @@
 import { StyleSheet, View, Text, TouchableOpacity, TextInput, ImageBackground, KeyboardAvoidingView, Platform, Alert } from 'react-native';
 import { useState } from 'react';
-import {  signInAnonymously } from "firebase/auth";
+import { signInAnonymously } from "firebase/auth";
 import { auth } from '../firebase'; // auth is initialized in firebase.js, import from there
 
 //path to background image shown on the start screen
