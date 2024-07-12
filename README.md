@@ -46,7 +46,7 @@ Google Firebase/Firestore
 Node.js version 20 is required  
 Clone repository and install in your project folder  
 
-# Firebase
+### Firebase
 
 This project requires a Firestore database  
 Create account with Google Firebase  
@@ -56,12 +56,12 @@ Configure the app on the Firebase console and copy your firebase configuration d
 Put your firebase configuration details in a file named .env in root folder of project  
 On Firebase console, enable anonymous authentication for your app  
 
-# Testing
+### Testing
 Testing can be done with emulators: use Android Studio for emulating android devices or Xcode (Mac only) for iOS devices  
 Expo allows to test with your mobile device: download the app "Expo Go" on your device, create an account with Expo and login into your account  
 Once the project is built and served with Expo, you can open the app within the Expo Go app 
 
-# Starting project
+### Starting project
 
 Using terminal, go to project folder and type  
 npx expo start  
