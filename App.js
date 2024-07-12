@@ -2,7 +2,7 @@
 import Start from './components/Start';
 import Chat from './components/Chat';
 
-import { db } from './firebase'; // firebase is initialized in firebase.js, import db from there
+import { db, storage } from './firebase'; // firebase is initialized in firebase.js
 
 import { disableNetwork, enableNetwork } from "firebase/firestore";
 
@@ -43,7 +43,12 @@ const App = () => {
         <Stack.Screen
           name="Chat"
         >
-          {props => <Chat isConnected={connectionStatus.isConnected} db={db} {...props} />}
+          {props => <Chat
+            isConnected={connectionStatus.isConnected}
+            db={db}
+            storage={storage}
+            {...props}
+          />}
         </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
